@@ -59,7 +59,7 @@ class Frame
      *
      * @param Roll $roll
      */
-    public function addRoleToFrame(Roll $roll): void
+    public function addRollToFrame(Roll $roll): void
     {
         if ($this->score + $roll->getPins() > BowlingGameDictionary::MAX_PINS) {
             throw new DomainException();

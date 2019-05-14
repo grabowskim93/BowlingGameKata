@@ -47,7 +47,7 @@ class BowlingGame
             $this->createFrame();
         }
 
-        $this->currentFrame->addRoleToFrame(new Roll($pins));
+        $this->currentFrame->addRollToFrame(new Roll($pins));
 
         $this->score += $pins;
         $strikeFrame = $this->getPreviousFrameByStep(1);

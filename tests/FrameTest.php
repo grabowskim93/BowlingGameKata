@@ -24,7 +24,7 @@ class FrameTest extends TestCase
             $this->expectException($expectException);
         }
         foreach ($input as $item) {
-            $frame->addRoleToFrame(new Roll($item));
+            $frame->addRollToFrame(new Roll($item));
         }
         $this->assertEquals($output, $frame->getFrameScore());
     }
@@ -32,28 +32,28 @@ class FrameTest extends TestCase
     public function testIfCreateFrame()
     {
         $frame = new Frame();
-        $frame->addRoleToFrame(new Roll(1));
-        $frame->addRoleToFrame(new Roll(2));
+        $frame->addRollToFrame(new Roll(1));
+        $frame->addRollToFrame(new Roll(2));
         $this->assertTrue($frame->whetherCreateFrame());
 
         $frame = new Frame();
-        $frame->addRoleToFrame(new Roll(1));
+        $frame->addRollToFrame(new Roll(1));
         $this->assertFalse($frame->whetherCreateFrame());
     }
 
     public function testisFrameStrike()
     {
         $frame = new Frame();
-        $frame->addRoleToFrame(new Roll(10));
+        $frame->addRollToFrame(new Roll(10));
         $this->assertTrue($frame->isStrike());
 
         $frame = new Frame();
-        $frame->addRoleToFrame(new Roll(0));
-        $frame->addRoleToFrame(new Roll(10));
+        $frame->addRollToFrame(new Roll(0));
+        $frame->addRollToFrame(new Roll(10));
         $this->assertFalse($frame->isStrike());
 
         $frame = new Frame();
-        $frame->addRoleToFrame(new Roll(8));
+        $frame->addRollToFrame(new Roll(8));
         $this->assertFalse($frame->isStrike());
     }
 
