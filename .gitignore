@@ -1,0 +1,6 @@
+vendor/*
+.idea/
+.php_cs.cache
+docker/*
+docker-compose.yml
+composer.phar
