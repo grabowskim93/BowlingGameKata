@@ -23,20 +23,23 @@ class BowlingGameTest extends TestCase
         if ($expectException) {
             $this->expectException($expectException);
         }
-        $bowlingGame->roll($input);
+        foreach ($input as $item) {
+            $bowlingGame->roll($item);
+        }
         $this->assertEquals($output, $bowlingGame->getScore());
     }
 
     public function rollProvider()
     {
-        yield 'Valid data#1' => ['input' => 5, 'output' => 5, 'expectException' => false];
-        yield 'Valid data#2' => ['input' => 10, 'output' => 10, 'expectException' => false];
-        yield 'Valid data#3' => ['input' => 0, 'output' => 0, 'expectException' => false];
+        yield 'Valid data#1' => ['input' => [5, 5], 'output' => 10, 'expectException' => false];
+        yield 'Valid data#2' => ['input' => [10], 'output' => 10, 'expectException' => false];
+        yield 'Valid data#3' => ['input' => [0], 'output' => 0, 'expectException' => false];
+        yield 'Valid data#4' => ['input' => [6, 5], 'output' => null, 'expectException' => \DomainException::class];
         yield 'Invalid data#1' => [
-            'input' => 11, 'output' => null, 'expectException' => InvalidArgumentException::class
+            'input' => [11], 'output' => null, 'expectException' => InvalidArgumentException::class
         ];
         yield 'Invalid data#2' => [
-            'input' => -1, 'output' => null, 'expectException' => InvalidArgumentException::class
+            'input' => [-1], 'output' => null, 'expectException' => InvalidArgumentException::class
         ];
     }
 }
