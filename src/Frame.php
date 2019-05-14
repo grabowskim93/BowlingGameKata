@@ -19,6 +19,11 @@ class Frame
     private $pins;
 
     /**
+     * @var int
+     */
+    private $score;
+
+    /**
      * Frame constructor.
      */
     public function __construct()
@@ -34,6 +39,11 @@ class Frame
     public function getFrameScore()
     {
         return 10;
+    }
+
+    public function addPinsToFrame(int $pins): void
+    {
+        $this->score += $pins;
     }
 
 }
