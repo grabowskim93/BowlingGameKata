@@ -36,6 +36,7 @@ class Frame
     public function __construct()
     {
         $this->pins = 0;
+        $this->rolls = [];
     }
 
     /**
@@ -60,6 +61,15 @@ class Frame
         }
         $this->rolls[] = $roll;
         $this->score += $roll->getPins();
+    }
+
+    public function whetherCreateFrame()
+    {
+        if (count($this->rolls) == 2) {
+            return true;
+        }
+
+        return false;
     }
 
 }
