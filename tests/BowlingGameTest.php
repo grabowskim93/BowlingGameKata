@@ -3,6 +3,7 @@
 namespace Test;
 
 use App\BowlingGame;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class BowlingGameTest extends TestCase
@@ -14,5 +15,8 @@ class BowlingGameTest extends TestCase
 
         $bowlingGame->roll(5);
         $this->assertEquals(5, $bowlingGame->getScore());
+
+        $this->expectException(InvalidArgumentException::class);
+        $bowlingGame->roll(11);
     }
 }
