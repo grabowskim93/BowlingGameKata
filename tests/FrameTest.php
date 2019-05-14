@@ -3,6 +3,7 @@
 namespace Test;
 
 use App\Frame;
+use App\Roll;
 use DomainException;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +24,7 @@ class FrameTest extends TestCase
             $this->expectException($expectException);
         }
         foreach ($input as $item) {
-            $frame->addPinsToFrame($item);
+            $frame->addPinsToFrame(new Roll($item));
         }
         $this->assertEquals($output, $frame->getFrameScore());
     }
