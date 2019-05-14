@@ -12,6 +12,7 @@ class BowlingGameTest extends TestCase
         $bowlingGame = new BowlingGame();
         $this->assertInstanceOf(BowlingGame::class, $bowlingGame);
 
-        $this->assertEquals(5, $bowlingGame->roll(5));
+        $bowlingGame->roll(5);
+        $this->assertEquals(5, $bowlingGame->getScore());
     }
 }
