@@ -11,6 +11,7 @@ class FrameTest extends TestCase
     {
         $frame = new Frame();
 
+        $frame->addPinsToFrame();
         $this->assertEquals(10, $frame->getFrameScore());
     }
 }
