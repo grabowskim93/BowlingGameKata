@@ -38,14 +38,19 @@ class Frame
      *
      * @return int
      */
-    public function getFrameScore()
+    public function getFrameScore(): int
     {
         return $this->score;
     }
 
+    /**
+     * Add pins to frame, validate if max pins exceeded.
+     *
+     * @param int $pins
+     */
     public function addPinsToFrame(int $pins): void
     {
-        if ($this->score + $pins > 10) {
+        if ($this->score + $pins > BowlingGameDictionary::MAX_PINS) {
             throw new DomainException();
         }
         $this->score += $pins;

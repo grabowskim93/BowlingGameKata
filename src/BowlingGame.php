@@ -19,22 +19,12 @@ class BowlingGame
     /**
      * @var int
      */
-    const MAX_PINS = 10;
-
-    /**
-     * @var int
-     */
     const MIN_PINS = 0;
 
     /**
      * @var int
      */
     private $score;
-
-    /**
-     * @var int
-     */
-    private $previous;
 
     /**
      * @var array
@@ -51,7 +41,6 @@ class BowlingGame
      */
     public function __construct()
     {
-        $this->previous = 0;
         $this->currentFrame = new Frame();
         $this->frames[] = $this->currentFrame;
     }
@@ -63,15 +52,11 @@ class BowlingGame
      */
     public function roll(int $pins): void
     {
-        if ($pins > self::MAX_PINS || $pins < self::MIN_PINS) {
+        if ($pins > BowlingGameDictionary::MAX_PINS || $pins < self::MIN_PINS) {
             throw new InvalidArgumentException();
         }
 
-        if ($this->previous + $pins > self::MAX_PINS) {
-            throw new DomainException();
-        }
-
-        $this->previous = $pins;
+        $this->currentFrame->addPinsToFrame($pins);
 
         $this->score += $pins;
     }
