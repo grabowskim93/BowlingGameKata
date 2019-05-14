@@ -8,15 +8,34 @@ use PHPUnit\Framework\TestCase;
 
 class BowlingGameTest extends TestCase
 {
-    public function testRoll()
+    /**
+     * @dataProvider rollProvider
+     *
+     * @param $input
+     * @param $output
+     * @param $expectException
+     */
+    public function testRoll($input, $output, $expectException)
     {
         $bowlingGame = new BowlingGame();
         $this->assertInstanceOf(BowlingGame::class, $bowlingGame);
 
-        $bowlingGame->roll(5);
-        $this->assertEquals(5, $bowlingGame->getScore());
+        if ($expectException) {
+            $this->expectException($expectException);
+        }
+        $bowlingGame->roll($input);
+        $this->assertEquals($output, $bowlingGame->getScore());
+    }
 
-        $this->expectException(InvalidArgumentException::class);
-        $bowlingGame->roll(11);
+    public function rollProvider()
+    {
+        yield 'Valid data#1' => ['input' => 5, 'output' => 5, 'expectException' => false];
+        yield 'Valid data#2' => ['input' => 10, 'output' => 10, 'expectException' => false];
+        yield 'Invalid data#1' => [
+            'input' => 11, 'output' => null, 'expectException' => InvalidArgumentException::class
+        ];
+        yield 'Invalid data#2' => [
+            'input' => -1, 'output' => null, 'expectException' => InvalidArgumentException::class
+        ];
     }
 }
