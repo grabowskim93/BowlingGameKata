@@ -6,6 +6,7 @@
 
 namespace App;
 
+use DomainException;
 use InvalidArgumentException;
 
 /**
@@ -30,11 +31,14 @@ class BowlingGame
      */
     private $score;
 
+    private $previous;
+
     /**
      * BowlingGame constructor.
      */
     public function __construct()
     {
+        $this->previous = 0;
     }
 
     /**
@@ -47,6 +51,13 @@ class BowlingGame
         if ($pins > self::MAX_PINS || $pins < self::MIN_PINS) {
             throw new InvalidArgumentException();
         }
+
+        if ($this->previous + $pins > self::MAX_PINS) {
+            throw new DomainException();
+        }
+
+        $this->previous = $pins;
+
         $this->score += $pins;
     }
 
