@@ -38,7 +38,7 @@ class Frame
      */
     public function getFrameScore()
     {
-        return 10;
+        return $this->score;
     }
 
     public function addPinsToFrame(int $pins): void
