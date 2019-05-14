@@ -29,6 +29,18 @@ class FrameTest extends TestCase
         $this->assertEquals($output, $frame->getFrameScore());
     }
 
+    public function testIfCreateFrame()
+    {
+        $frame = new Frame();
+        $frame->addRoleToFrame(new Roll(1));
+        $frame->addRoleToFrame(new Roll(2));
+        $this->assertTrue($frame->whetherCreateFrame());
+
+        $frame = new Frame();
+        $frame->addRoleToFrame(new Roll(1));
+        $this->assertFalse($frame->whetherCreateFrame());
+    }
+
     public function framePinsProvider()
     {
         yield 'Frame #1' => ['input' => [10], 'output' => 10, 'expectException' => false];
