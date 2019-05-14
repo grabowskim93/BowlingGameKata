@@ -50,6 +50,10 @@ class BowlingGame
         $this->currentFrame->addRoleToFrame(new Roll($pins));
 
         $this->score += $pins;
+        $strikeFrame = $this->getPreviousFrameByStep(1);
+        if ($strikeFrame) {
+            $this->score += $pins;
+        }
     }
 
     /**
@@ -69,5 +73,27 @@ class BowlingGame
     {
         $this->currentFrame = new Frame();
         $this->frames[] = $this->currentFrame;
+    }
+
+    /**
+     * Get frame for given step back
+     *
+     * @param $index
+     *
+     * @return Frame | bool
+     */
+    private function getPreviousFrameByStep(int $index)
+    {
+        if (count($this->frames) === 1) {
+            return null;
+        }
+
+        $key = count($this->frames) - $index -1; //need -1 because array index start from 0.
+
+        if (isset($this->frames[$key]) && $this->frames[$key]->isStrike()) {
+            return $this->frames[$key];
+        }
+
+        return null;
     }
 }
