@@ -6,6 +6,8 @@
 
 namespace App;
 
+use DomainException;
+
 /**
  * Class Frame
  *
@@ -43,6 +45,9 @@ class Frame
 
     public function addPinsToFrame(int $pins): void
     {
+        if ($this->score + $pins > 10) {
+            throw new DomainException();
+        }
         $this->score += $pins;
     }
 
