@@ -3,15 +3,34 @@
 namespace Test;
 
 use App\Frame;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
 class FrameTest extends TestCase
 {
-    public function testFrameScore()
+    /**
+     * @dataProvider framePinsProvider
+     *
+     * @param $input
+     * @param $output
+     * @param $expectException
+     */
+    public function testFrameScore($input, $output, $expectException)
     {
         $frame = new Frame();
 
-        $frame->addPinsToFrame(10);
-        $this->assertEquals(10, $frame->getFrameScore());
+        if ($expectException) {
+            $this->expectException($expectException);
+        }
+        foreach ($input as $item) {
+            $frame->addPinsToFrame($item);
+        }
+        $this->assertEquals($output, $frame->getFrameScore());
+    }
+
+    public function framePinsProvider()
+    {
+        yield 'Frame #1' => ['input' => [10], 'output' => 10, 'expectException' => false];
+        yield 'Frame #2' => ['input' => [10, 10], 'output' => null, 'expectException' => DomainException::class];
     }
 }
