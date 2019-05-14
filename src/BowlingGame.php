@@ -18,6 +18,11 @@ class BowlingGame
     /**
      * @var int
      */
+    const MAX_PINS = 10;
+
+    /**
+     * @var int
+     */
     private $score;
 
     /**
@@ -34,7 +39,7 @@ class BowlingGame
      */
     public function roll(int $pins): void
     {
-        if ($pins > 10) {
+        if ($pins > self::MAX_PINS) {
             throw new InvalidArgumentException();
         }
         $this->score += $pins;
