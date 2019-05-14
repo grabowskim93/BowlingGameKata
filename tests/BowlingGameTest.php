@@ -3,6 +3,7 @@
 namespace Test;
 
 use App\BowlingGame;
+use DomainException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +35,7 @@ class BowlingGameTest extends TestCase
         yield 'Valid data#1' => ['input' => [5, 5], 'output' => 10, 'expectException' => false];
         yield 'Valid data#2' => ['input' => [10], 'output' => 10, 'expectException' => false];
         yield 'Valid data#3' => ['input' => [0], 'output' => 0, 'expectException' => false];
-        yield 'Valid data#4' => ['input' => [6, 5], 'output' => null, 'expectException' => \DomainException::class];
+        yield 'Valid data#4' => ['input' => [6, 5], 'output' => null, 'expectException' => DomainException::class];
         yield 'Invalid data#1' => [
             'input' => [11], 'output' => null, 'expectException' => InvalidArgumentException::class
         ];

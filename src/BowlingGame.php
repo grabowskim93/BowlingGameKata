@@ -31,7 +31,20 @@ class BowlingGame
      */
     private $score;
 
+    /**
+     * @var int
+     */
     private $previous;
+
+    /**
+     * @var array
+     */
+    private $frames;
+
+    /**
+     * @var Frame
+     */
+    private $currentFrame;
 
     /**
      * BowlingGame constructor.
@@ -39,6 +52,8 @@ class BowlingGame
     public function __construct()
     {
         $this->previous = 0;
+        $this->currentFrame = new Frame();
+        $this->frames[] = $this->currentFrame;
     }
 
     /**
