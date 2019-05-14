@@ -24,7 +24,7 @@ class FrameTest extends TestCase
             $this->expectException($expectException);
         }
         foreach ($input as $item) {
-            $frame->addPinsToFrame(new Roll($item));
+            $frame->addRoleToFrame(new Roll($item));
         }
         $this->assertEquals($output, $frame->getFrameScore());
     }

@@ -26,6 +26,11 @@ class Frame
     private $score;
 
     /**
+     * @var array
+     */
+    private $rolls;
+
+    /**
      * Frame constructor.
      */
     public function __construct()
@@ -48,11 +53,12 @@ class Frame
      *
      * @param Roll $roll
      */
-    public function addPinsToFrame(Roll $roll): void
+    public function addRoleToFrame(Roll $roll): void
     {
         if ($this->score + $roll->getPins() > BowlingGameDictionary::MAX_PINS) {
             throw new DomainException();
         }
+        $this->rolls[] = $roll;
         $this->score += $roll->getPins();
     }
 

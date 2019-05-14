@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * Single bowling roll.
+ */
 
 namespace App;
 
+/**
+ * Class Roll
+ *
+ * @package App
+ */
 class Roll
 {
     /**
@@ -20,6 +28,11 @@ class Roll
         $this->pins = $pins;
     }
 
+    /**
+     * Get roll pins.
+     *
+     * @return int
+     */
     public function getPins()
     {
         return $this->pins;
