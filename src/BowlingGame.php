@@ -29,4 +29,9 @@ class BowlingGame
     {
         return $pins;
     }
+
+    public function getScore(): int
+    {
+        return 5;
+    }
 }
