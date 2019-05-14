@@ -29,11 +29,6 @@ class BowlingGame
     private $currentFrame;
 
     /**
-     * @var int
-     */
-    private $rollCounter;
-
-    /**
      * BowlingGame constructor.
      */
     public function __construct()
@@ -48,15 +43,13 @@ class BowlingGame
      */
     public function roll(int $pins): void
     {
-        if ($this->rollCounter === 2) {
+        if ($this->currentFrame->whetherCreateFrame()) {
             $this->createFrame();
         }
 
         $this->currentFrame->addRoleToFrame(new Roll($pins));
 
         $this->score += $pins;
-
-        $this->rollCounter++;
     }
 
     /**
@@ -76,6 +69,5 @@ class BowlingGame
     {
         $this->currentFrame = new Frame();
         $this->frames[] = $this->currentFrame;
-        $this->rollCounter = 0;
     }
 }
