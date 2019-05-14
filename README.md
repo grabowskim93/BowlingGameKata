@@ -1,6 +1,6 @@
 # Bowling game kata.
 
-http://kata-log.rocks/tdd
+http://www.butunclebob.com/ArticleS.UncleBob.TheBowlingGameKata
 
 To run tests:
 ./vendor/bin/phpunit --testsuite unitTests
