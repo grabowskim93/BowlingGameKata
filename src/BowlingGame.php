@@ -37,10 +37,16 @@ class BowlingGame
     private $currentFrame;
 
     /**
+     * @var int
+     */
+    private $rollCounter;
+
+    /**
      * BowlingGame constructor.
      */
     public function __construct()
     {
+        $this->rollCounter = 0;
         $this->currentFrame = new Frame();
         $this->frames[] = $this->currentFrame;
     }
@@ -52,6 +58,11 @@ class BowlingGame
      */
     public function roll(int $pins): void
     {
+        if ($this->rollCounter === 2) {
+            $this->currentFrame = new Frame();
+            $this->frames[] = $this->currentFrame;
+            $this->rollCounter = 0;
+        }
         if ($pins > BowlingGameDictionary::MAX_PINS || $pins < self::MIN_PINS) {
             throw new InvalidArgumentException();
         }
@@ -59,6 +70,8 @@ class BowlingGame
         $this->currentFrame->addPinsToFrame($pins);
 
         $this->score += $pins;
+
+        $this->rollCounter++;
     }
 
     /**
