@@ -69,7 +69,12 @@ class Frame
         $this->score += $roll->getPins();
     }
 
-    public function whetherCreateFrame()
+    /**
+     * Whether must create new frame.
+     *
+     * @return bool
+     */
+    public function whetherCreateFrame(): bool
     {
         if (count($this->rolls) == 2) {
             return true;
@@ -83,7 +88,7 @@ class Frame
      *
      * @return bool
      */
-    public function isStrike()
+    public function isStrike(): bool
     {
         if (count($this->rolls) === 1 && $this->roll->getPins() === 10) {
             return true;
@@ -91,5 +96,4 @@ class Frame
 
         return false;
     }
-
 }

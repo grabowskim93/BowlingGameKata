@@ -43,7 +43,7 @@ class BowlingGame
      */
     public function roll(int $pins): void
     {
-        if ($this->currentFrame->whetherCreateFrame()) {
+        if ($this->currentFrame->whetherCreateFrame() || $this->currentFrame->isStrike()) {
             $this->createFrame();
         }
 
