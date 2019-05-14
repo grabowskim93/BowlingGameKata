@@ -27,7 +27,7 @@ class Roll
      */
     public function __construct(int $pins)
     {
-        if ($pins > BowlingGameDictionary::MAX_PINS || $pins < BowlingGame::MIN_PINS) {
+        if ($pins > BowlingGameDictionary::MAX_PINS || $pins < BowlingGameDictionary::MIN_PINS) {
             throw new InvalidArgumentException();
         }
 

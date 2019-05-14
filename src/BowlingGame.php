@@ -6,8 +6,6 @@
 
 namespace App;
 
-use InvalidArgumentException;
-
 /**
  * Class BowlingGame
  *
@@ -15,11 +13,6 @@ use InvalidArgumentException;
  */
 class BowlingGame
 {
-    /**
-     * @var int
-     */
-    const MIN_PINS = 0;
-
     /**
      * @var int
      */
@@ -57,9 +50,6 @@ class BowlingGame
     {
         if ($this->rollCounter === 2) {
             $this->createFrame();
-        }
-        if ($pins > BowlingGameDictionary::MAX_PINS || $pins < self::MIN_PINS) {
-            throw new InvalidArgumentException();
         }
 
         $this->currentFrame->addRoleToFrame(new Roll($pins));
