@@ -6,7 +6,6 @@
 
 namespace App;
 
-use DomainException;
 use InvalidArgumentException;
 
 /**
@@ -46,9 +45,7 @@ class BowlingGame
      */
     public function __construct()
     {
-        $this->rollCounter = 0;
-        $this->currentFrame = new Frame();
-        $this->frames[] = $this->currentFrame;
+        $this->createFrame();
     }
 
     /**
@@ -59,9 +56,7 @@ class BowlingGame
     public function roll(int $pins): void
     {
         if ($this->rollCounter === 2) {
-            $this->currentFrame = new Frame();
-            $this->frames[] = $this->currentFrame;
-            $this->rollCounter = 0;
+            $this->createFrame();
         }
         if ($pins > BowlingGameDictionary::MAX_PINS || $pins < self::MIN_PINS) {
             throw new InvalidArgumentException();
@@ -82,5 +77,15 @@ class BowlingGame
     public function getScore(): int
     {
         return $this->score;
+    }
+
+    /**
+     * Create new frame.
+     */
+    private function createFrame(): void
+    {
+        $this->currentFrame = new Frame();
+        $this->frames[] = $this->currentFrame;
+        $this->rollCounter = 0;
     }
 }
