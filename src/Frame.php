@@ -14,4 +14,9 @@ class Frame
         $this->pins = 0;
     }
 
+    public function getFrameScore()
+    {
+        return 10;
+    }
+
 }
