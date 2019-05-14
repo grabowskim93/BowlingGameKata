@@ -31,6 +31,11 @@ class Frame
     private $rolls;
 
     /**
+     * @var Roll
+     */
+    private $roll;
+
+    /**
      * Frame constructor.
      */
     public function __construct()
@@ -60,12 +65,27 @@ class Frame
             throw new DomainException();
         }
         $this->rolls[] = $roll;
+        $this->roll = $roll;
         $this->score += $roll->getPins();
     }
 
     public function whetherCreateFrame()
     {
         if (count($this->rolls) == 2) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Whether frame is strike
+     *
+     * @return bool
+     */
+    public function isStrike()
+    {
+        if (count($this->rolls) === 1 && $this->roll->getPins() === 10) {
             return true;
         }
 
