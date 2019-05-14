@@ -14,6 +14,11 @@ namespace App;
 class BowlingGame
 {
     /**
+     * @var int
+     */
+    private $score;
+
+    /**
      * BowlingGame constructor.
      */
     public function __construct()
@@ -21,17 +26,22 @@ class BowlingGame
     }
 
     /**
+     * Single bowling roll.
+
      * @param int $pins
+     */
+    public function roll(int $pins): void
+    {
+        $this->score += $pins;
+    }
+
+    /**
+     * Get bowling game score.
      *
      * @return int
      */
-    public function roll(int $pins): int
-    {
-        return $pins;
-    }
-
     public function getScore(): int
     {
-        return 5;
+        return $this->score;
     }
 }
