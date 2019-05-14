@@ -21,12 +21,12 @@ class BowlingGame
     }
 
     /**
-     * @param int $int
+     * @param int $pins
      *
      * @return int
      */
-    public function roll(int $int): int
+    public function roll(int $pins): int
     {
-        return $int;
+        return $pins;
     }
 }
