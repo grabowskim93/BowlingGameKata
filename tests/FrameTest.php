@@ -57,6 +57,13 @@ class FrameTest extends TestCase
         $this->assertFalse($frame->isStrike());
     }
 
+    public function testAddPinsToFrame()
+    {
+        $frame = new Frame();
+        $frame->addPinsToFrame(4);
+        $this->assertEquals(4, $frame->getFrameScore());
+    }
+
     public function framePinsProvider()
     {
         yield 'Frame #1' => ['input' => [10], 'output' => 10, 'expectException' => false];
