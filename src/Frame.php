@@ -96,4 +96,14 @@ class Frame
 
         return false;
     }
+
+    /**
+     * Add pins to frame score after strike or spare.
+     *
+     * @param int $int
+     */
+    public function addPinsToFrame(int $int): void
+    {
+        $this->score += $int;
+    }
 }
