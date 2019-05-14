@@ -19,4 +19,14 @@ class BowlingGame
     public function __construct()
     {
     }
+
+    /**
+     * @param int $int
+     *
+     * @return int
+     */
+    public function roll(int $int): int
+    {
+        return $int;
+    }
 }
