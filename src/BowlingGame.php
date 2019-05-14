@@ -39,7 +39,7 @@ class BowlingGame
      */
     public function roll(int $pins): void
     {
-        if ($pins > self::MAX_PINS) {
+        if ($pins > self::MAX_PINS || $pins < 0) {
             throw new InvalidArgumentException();
         }
         $this->score += $pins;
