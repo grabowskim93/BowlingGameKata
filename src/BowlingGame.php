@@ -6,6 +6,8 @@
 
 namespace App;
 
+use InvalidArgumentException;
+
 /**
  * Class BowlingGame
  *
@@ -32,6 +34,9 @@ class BowlingGame
      */
     public function roll(int $pins): void
     {
+        if ($pins > 10) {
+            throw new InvalidArgumentException();
+        }
         $this->score += $pins;
     }
 
