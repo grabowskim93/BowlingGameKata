@@ -52,6 +52,7 @@ class BowlingGame
         $this->score += $pins;
         $strikeFrame = $this->getPreviousFrameByStep(1);
         if ($strikeFrame) {
+            $strikeFrame->addPinsToFrame($pins);
             $this->score += $pins;
         }
     }

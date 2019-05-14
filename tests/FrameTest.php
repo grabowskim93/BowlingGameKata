@@ -41,20 +41,23 @@ class FrameTest extends TestCase
         $this->assertFalse($frame->whetherCreateFrame());
     }
 
-    public function testisFrameStrike()
+    /**
+     * @dataProvider frameStrikeProvider
+     *
+     * @param $input
+     * @param $output
+     */
+    public function testisFrameStrike($input, $output)
     {
         $frame = new Frame();
-        $frame->addRollToFrame(new Roll(10));
-        $this->assertTrue($frame->isStrike());
-
-        $frame = new Frame();
-        $frame->addRollToFrame(new Roll(0));
-        $frame->addRollToFrame(new Roll(10));
-        $this->assertFalse($frame->isStrike());
-
-        $frame = new Frame();
-        $frame->addRollToFrame(new Roll(8));
-        $this->assertFalse($frame->isStrike());
+        foreach ($input as $item) {
+            $frame->addRollToFrame(new Roll($item));
+        }
+        if ($output) {
+            $this->assertTrue($frame->isStrike());
+        } else {
+            $this->assertFalse($frame->isStrike());
+        }
     }
 
     public function testAddPinsToFrame()
@@ -68,5 +71,12 @@ class FrameTest extends TestCase
     {
         yield 'Frame #1' => ['input' => [10], 'output' => 10, 'expectException' => false];
         yield 'Frame #2' => ['input' => [10, 10], 'output' => null, 'expectException' => DomainException::class];
+    }
+
+    public function frameStrikeProvider()
+    {
+        yield 'Strike #1' => ['input' => [10], 'output' => true];
+        yield 'Strike #1' => ['input' => [0, 10], 'output' => false];
+        yield 'Strike #1' => ['input' => [8], 'output' => false];
     }
 }
