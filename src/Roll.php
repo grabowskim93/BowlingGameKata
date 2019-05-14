@@ -6,6 +6,8 @@
 
 namespace App;
 
+use InvalidArgumentException;
+
 /**
  * Class Roll
  *
@@ -25,6 +27,10 @@ class Roll
      */
     public function __construct(int $pins)
     {
+        if ($pins > BowlingGameDictionary::MAX_PINS || $pins < BowlingGame::MIN_PINS) {
+            throw new InvalidArgumentException();
+        }
+
         $this->pins = $pins;
     }
 

@@ -62,7 +62,7 @@ class BowlingGame
             throw new InvalidArgumentException();
         }
 
-        $this->currentFrame->addPinsToFrame(new Roll($pins));
+        $this->currentFrame->addRoleToFrame(new Roll($pins));
 
         $this->score += $pins;
 
