@@ -20,13 +20,20 @@ class BowlingGame
 
     /**
      * Roll ball.
+     *
+     * @param int $pins
      */
     public function roll(int $pins): void
     {
         $this->pins += $pins;
     }
 
-    public function score()
+    /**
+     * Get sum of pins after rolls.
+     *
+     * @return int
+     */
+    public function score(): int
     {
         return $this->pins;
     }
