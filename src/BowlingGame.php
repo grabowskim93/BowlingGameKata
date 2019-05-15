@@ -14,9 +14,20 @@ namespace App;
 class BowlingGame
 {
     /**
-     * @var int
+     * @var array
      */
     private $pins;
+
+    /**
+     * @var int
+     */
+    private $score;
+
+    public function __construct()
+    {
+        $this->score = 0;
+        $this->pins = [];
+    }
 
     /**
      * Roll ball.
@@ -25,7 +36,17 @@ class BowlingGame
      */
     public function roll(int $pins): void
     {
-        $this->pins += $pins;
+        $this->score += $pins;
+
+        $this->pins[] = $pins;
+
+        $currentRoll = count($this->pins) - 1; //because increments from 0.
+        if (isset($this->pins[$currentRoll-1])
+            && isset($this->pins[$currentRoll-2])
+            && $this->pins[$currentRoll-1] + $this->pins[$currentRoll-2] === 10
+        ) {
+            $this->score += $pins;
+        }
     }
 
     /**
@@ -35,6 +56,6 @@ class BowlingGame
      */
     public function score(): int
     {
-        return $this->pins;
+        return $this->score;
     }
 }
