@@ -41,10 +41,22 @@ class BowlingGame
      */
     private $score;
 
+    /**
+     * @var array
+     */
+    private $currentFrame;
+
+    /**
+     * @var array
+     */
+    private $frames;
+
     public function __construct()
     {
         $this->score = 0;
         $this->pins = [];
+        $this->currentFrame = [];
+        $this->frames = [];
     }
 
     /**
@@ -54,11 +66,25 @@ class BowlingGame
      */
     public function roll(int $pins): void
     {
-        $this->score += $pins;
-        $this->pins[] = $pins;
+        if (count($this->frames) <= 10) {
+            $this->score += $pins;
+        }
 
-        $this->scoreSpare($pins);
-        $this->scoreStrike($pins);
+        if ($pins === self::STRIKE_SUM) {
+            $this->currentFrame = [$pins];
+            $this->frames[] = $this->currentFrame;
+            $this->pins = [];
+            $this->scoreSpare();
+            $this->scoreStrike();
+        } elseif ((count($this->pins) === 1)) {
+            $this->currentFrame = [$this->pins[0], $pins];
+            $this->frames[] = $this->currentFrame;
+            $this->pins = [];
+            $this->scoreSpare();
+            $this->scoreStrike();
+        } else {
+            $this->pins[] = $pins;
+        }
     }
 
     /**
@@ -73,39 +99,36 @@ class BowlingGame
 
     /**
      * Add extra points if spare.
-     *
-     * @param int $pins
      */
-    private function scoreSpare(int $pins): void
+    private function scoreSpare(): void
     {
-        $currentRoll = count($this->pins) - 1; //because increments from 0.
-        if (isset($this->pins[$currentRoll-1])
-            && isset($this->pins[$currentRoll-2])
-            && $this->pins[$currentRoll-1] + $this->pins[$currentRoll-2] === self::SPARE_SUM
+        $currentFrame = count($this->frames) - 1; //because increments from 0.
+        if (isset($this->frames[$currentFrame-1])
+            && count($this->frames[$currentFrame-1]) === 2
+            && array_sum($this->frames[$currentFrame-1]) === self::SPARE_SUM
         ) {
-            $this->score += $pins;
+            $this->score += $this->currentFrame[0];
         }
     }
 
     /**
      * Add extra points if strike.
-     *
-     * @param int $pins
      */
-    private function scoreStrike(int $pins): void
+    private function scoreStrike(): void
     {
-        $currentRoll = count($this->pins) - 1; //because increments from 0.
-
-        if (isset($this->pins[$currentRoll-1])
-            && $this->pins[$currentRoll-1] === 10
+        $currentFrame = count($this->frames) - 1; //because increments from 0.
+        if (isset($this->frames[$currentFrame-1])
+            && count($this->frames) < 12
+            && $this->frames[$currentFrame-1][0] === 10
         ) {
-            $this->score += $pins;
+            $this->score += array_sum($this->currentFrame);
         }
 
-        if (isset($this->pins[$currentRoll-2])
-            && $this->pins[$currentRoll-2] === 10
+        if (isset($this->frames[$currentFrame-2])
+            && count($this->frames) < 12
+            && $this->frames[$currentFrame-2][0] === 10
         ) {
-            $this->score += $pins;
+            $this->score += array_sum($this->currentFrame);
         }
     }
 }
