@@ -92,7 +92,7 @@ class BowlingGame
             $this->score += $pins;
         }
 
-        if ($pins === self::STRIKE_SUM) {
+        if ($pins === self::STRIKE_SUM && count($this->pins) === 0) {
             $this->createFrameAndScoreExtraPins([$pins]);
         } elseif ((count($this->pins) === 1)) {
             $this->createFrameAndScoreExtraPins([$this->pins[0], $pins]);
