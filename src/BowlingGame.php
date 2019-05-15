@@ -28,6 +28,28 @@ class BowlingGame
     const STRIKE_SUM = 10;
 
     /**
+     * Frames limit when strike or spare is thrown in last round.
+     *
+     * @var int
+     */
+    const SPARE_STRIKE_FRAMES_LIMIT = 11;
+
+    /**
+     * Amount of allowed frames.
+     *
+     * @var int
+     */
+    const FRAMES_AMOUNT = 10;
+
+
+    /**
+     * Amount of rolls in spare or normal frame.
+     *
+     * @var int
+     */
+    const FRAME_ROLLS = 2;
+
+    /**
      * Array with all rolls pins.
      *
      * @var array
@@ -66,22 +88,14 @@ class BowlingGame
      */
     public function roll(int $pins): void
     {
-        if (count($this->frames) <= 10) {
+        if (count($this->frames) <= self::FRAMES_AMOUNT) {
             $this->score += $pins;
         }
 
         if ($pins === self::STRIKE_SUM) {
-            $this->currentFrame = [$pins];
-            $this->frames[] = $this->currentFrame;
-            $this->pins = [];
-            $this->scoreSpare();
-            $this->scoreStrike();
+            $this->createFrameAndScoreExtraPins([$pins]);
         } elseif ((count($this->pins) === 1)) {
-            $this->currentFrame = [$this->pins[0], $pins];
-            $this->frames[] = $this->currentFrame;
-            $this->pins = [];
-            $this->scoreSpare();
-            $this->scoreStrike();
+            $this->createFrameAndScoreExtraPins([$this->pins[0], $pins]);
         } else {
             $this->pins[] = $pins;
         }
@@ -98,13 +112,27 @@ class BowlingGame
     }
 
     /**
+     * Create new frame, add to all frames array, score spare and strike.
+     *
+     * @param array $frame
+     */
+    private function createFrameAndScoreExtraPins(array $frame): void
+    {
+        $this->currentFrame = $frame;
+        $this->frames[] = $this->currentFrame;
+        $this->pins = [];
+        $this->scoreSpare();
+        $this->scoreStrike();
+    }
+
+    /**
      * Add extra points if spare.
      */
     private function scoreSpare(): void
     {
         $currentFrame = count($this->frames) - 1; //because increments from 0.
         if (isset($this->frames[$currentFrame-1])
-            && count($this->frames[$currentFrame-1]) === 2
+            && count($this->frames[$currentFrame-1]) === self::FRAME_ROLLS
             && array_sum($this->frames[$currentFrame-1]) === self::SPARE_SUM
         ) {
             $this->score += $this->currentFrame[0];
@@ -118,15 +146,15 @@ class BowlingGame
     {
         $currentFrame = count($this->frames) - 1; //because increments from 0.
         if (isset($this->frames[$currentFrame-1])
-            && count($this->frames) < 12
-            && $this->frames[$currentFrame-1][0] === 10
+            && count($this->frames) <= self::SPARE_STRIKE_FRAMES_LIMIT
+            && $this->frames[$currentFrame-1][0] === self::STRIKE_SUM
         ) {
             $this->score += array_sum($this->currentFrame);
         }
 
         if (isset($this->frames[$currentFrame-2])
-            && count($this->frames) < 12
-            && $this->frames[$currentFrame-2][0] === 10
+            && count($this->frames) <= self::SPARE_STRIKE_FRAMES_LIMIT
+            && $this->frames[$currentFrame-2][0] === self::STRIKE_SUM
         ) {
             $this->score += array_sum($this->currentFrame);
         }
