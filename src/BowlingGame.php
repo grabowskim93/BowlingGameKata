@@ -51,6 +51,20 @@ class BowlingGame
 
         $this->pins[] = $pins;
         $this->scoreSpare($pins);
+
+        $currentRoll = count($this->pins) - 1; //because increments from 0.
+
+        if (isset($this->pins[$currentRoll-1])
+            && $this->pins[$currentRoll-1] === 10
+        ) {
+            $this->score += $pins;
+        }
+
+        if (isset($this->pins[$currentRoll-2])
+            && $this->pins[$currentRoll-2] === 10
+        ) {
+            $this->score += $pins;
+        }
     }
 
     /**
