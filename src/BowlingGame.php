@@ -13,7 +13,10 @@ namespace App;
  */
 class BowlingGame
 {
-    public function roll()
+    /**
+     * Roll ball.
+     */
+    public function roll(): void
     {
     }
 }
