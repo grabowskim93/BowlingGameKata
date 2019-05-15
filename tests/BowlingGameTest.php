@@ -50,9 +50,13 @@ class BowlingGameTest extends TestCase
             'input' => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             'output' => 20, 'expectError' => false
         ];
-        yield 'Game#1 - spare in first frame'  => [
+        yield 'Game#2 - spare in first frame'  => [
             'input' => [6, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             'output' => 16, 'expectError' => false
+        ];
+        yield 'Game#3 - strike in first frame, followed by 3 and 4 pins, followed by all misses'  => [
+            'input' => [10, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            'output' => 24, 'expectError' => false
         ];
     }
 }
