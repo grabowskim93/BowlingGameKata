@@ -66,5 +66,9 @@ class BowlingGameTest extends TestCase
             'input' => [10, 10, 7, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             'output' => 57, 'expectError' => false
         ];
+        yield 'Game#6 - spares in second roll'  => [
+            'input' => [0, 10, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            'output' => 23, 'expectError' => false
+        ];
     }
 }
