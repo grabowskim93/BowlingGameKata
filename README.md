@@ -8,3 +8,5 @@ To run tests:
 Bowling game OOP on branch master.
 
 Bowling game implemented in single class on branch single-class.
+
+Thnaks for watching.
