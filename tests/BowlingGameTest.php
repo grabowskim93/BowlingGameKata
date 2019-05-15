@@ -37,6 +37,7 @@ class BowlingGameTest extends TestCase
         yield 'Valid data#3' => ['input' => [0], 'output' => 0, 'expectException' => false];
         yield 'Valid data#4' => ['input' => [5,4,3,2], 'output' => 14, 'expectException' => false];
         yield 'Valid data#5' => ['input' => [10, 4, 1], 'output' => 20, 'expectException' => false];
+        yield 'Valid data#6' => ['input' => [10, 10, 10], 'output' => 60, 'expectException' => false];
         yield 'Invalid data#1' => [
             'input' => [11], 'output' => null, 'expectException' => InvalidArgumentException::class
         ];
