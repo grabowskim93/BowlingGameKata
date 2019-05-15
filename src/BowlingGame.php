@@ -155,8 +155,9 @@ class BowlingGame
         if (isset($this->frames[$currentFrame-2])
             && count($this->frames) <= self::SPARE_STRIKE_FRAMES_LIMIT
             && $this->frames[$currentFrame-2][0] === self::STRIKE_SUM
+            && $this->frames[$currentFrame-1][0] === self::STRIKE_SUM
         ) {
-            $this->score += array_sum($this->currentFrame);
+            $this->score += $this->currentFrame[0];
         }
     }
 }
