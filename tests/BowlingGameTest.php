@@ -58,5 +58,9 @@ class BowlingGameTest extends TestCase
             'input' => [10, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             'output' => 24, 'expectError' => false
         ];
+        yield 'Game#4 - perfect game - 12 strikes'  => [
+            'input' => [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+            'output' => 300, 'expectError' => false
+        ];
     }
 }
