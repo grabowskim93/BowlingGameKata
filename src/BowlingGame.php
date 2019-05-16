@@ -65,6 +65,11 @@ class BowlingGame
     private $frames;
 
     /**
+     * @var int $currentFrameIndex Index of current frame.
+     */
+    private $currentFrameIndex;
+
+    /**
      * BowlingGame constructor.
      */
     public function __construct()
@@ -73,6 +78,7 @@ class BowlingGame
         $this->pins = [];
         $this->currentFrame = [];
         $this->frames = [];
+        $this->currentFrameIndex = 0;
     }
 
     /**
@@ -82,6 +88,8 @@ class BowlingGame
      */
     public function roll(int $pins): void
     {
+        $this->currentFrameIndex = count($this->frames);
+
         if (count($this->frames) <= self::FRAMES_AMOUNT) {
             $this->score += $pins;
         }
@@ -100,7 +108,7 @@ class BowlingGame
     /**
      * Get sum of pins after rolls.
      *
-     * @return int
+     * @return int Total score.
      */
     public function score(): int
     {
@@ -110,7 +118,7 @@ class BowlingGame
     /**
      * Create new frame, add to all frames array, score spare and strike.
      *
-     * @param array $frame
+     * @param array $frame Frame containing rolls.
      */
     private function createFrameAndScoreExtraPins(array $frame): void
     {
@@ -126,13 +134,22 @@ class BowlingGame
      */
     private function scoreSpare(): void
     {
-        $currentFrame = count($this->frames) - 1; //because increments from 0.
-        if (isset($this->frames[$currentFrame-1])
-            && count($this->frames[$currentFrame-1]) === self::FRAME_ROLLS
-            && array_sum($this->frames[$currentFrame-1]) === self::SPARE_SUM
+        if (isset($this->frames[$this->currentFrameIndex-1])
+            && $this->spareCondition()
         ) {
             $this->score += $this->currentFrame[0];
         }
+    }
+
+    /**
+     * Check if spare in previous frame.
+     *
+     * @return bool
+     */
+    private function spareCondition()
+    {
+        return count($this->frames[$this->currentFrameIndex-1]) === self::FRAME_ROLLS
+            && array_sum($this->frames[$this->currentFrameIndex-1]) === self::SPARE_SUM;
     }
 
     /**
@@ -140,19 +157,32 @@ class BowlingGame
      */
     private function scoreStrike(): void
     {
-        $currentFrame = count($this->frames) - 1; //because increments from 0.
-        if (isset($this->frames[$currentFrame-1])
+        if (isset($this->frames[$this->currentFrameIndex-1])
             && count($this->frames) <= self::FRAMES_AMOUNT
-            && $this->frames[$currentFrame-1][0] === self::STRIKE_SUM
+            && $this->previousStrikeCondition(1)
         ) {
             $this->score += array_sum($this->currentFrame);
 
-            if (isset($this->frames[$currentFrame-2]) && $this->frames[$currentFrame-2][0] === self::STRIKE_SUM) {
+            if (isset($this->frames[$this->currentFrameIndex-2])
+                && $this->previousStrikeCondition(2)) {
                 $this->score += $this->currentFrame[0];
             }
         }
 
         $this->scoreLastFrameStrike();
+    }
+
+
+    /**
+     * Check if strike in x previous strike. Max x is 2.
+     *
+     * @param int $strikeIndex Previous strike index.
+     *
+     * @return bool
+     */
+    private function previousStrikeCondition(int $strikeIndex)
+    {
+        return $this->frames[$this->currentFrameIndex-$strikeIndex][0] === self::STRIKE_SUM;
     }
 
     /**
