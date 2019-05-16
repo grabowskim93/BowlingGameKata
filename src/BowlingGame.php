@@ -45,9 +45,10 @@ class BowlingGame
     const FRAME_ROLLS = 2;
 
     /**
-     * @var array $pins Array with all rolls pins.
+     * @var array $previousRollNotFramedValue Temporary value for roll. If not null value need to create new frame
+     *                                        otherwise it is first roll in frame - do not create frame.
      */
-    private $pins;
+    private $previousRollNotFramedValue;
 
     /**
      * @var int $score Total score of game.
@@ -80,7 +81,7 @@ class BowlingGame
     public function __construct()
     {
         $this->score = 0;
-        $this->pins = [];
+        $this->previousRollNotFramedValue = null;
         $this->rolls = [];
         $this->currentFrame = [];
         $this->frames = [];
@@ -117,16 +118,16 @@ class BowlingGame
     /**
      * @param int $rollPins Pins in single roll.
      */
-    private function splitIntoFrames(int $rollPins)
+    private function splitIntoFrames(int $rollPins): void
     {
         if (count($this->frames) >= self::FRAMES_AMOUNT) {
             $this->createFrame([$rollPins]);
-        } elseif ($rollPins === self::STRIKE_SUM && count($this->pins) === 0) {
+        } elseif ($rollPins === self::STRIKE_SUM && is_null($this->previousRollNotFramedValue)) {
             $this->createFrame([$rollPins]);
-        } elseif ((count($this->pins) === 1)) {
-            $this->createFrame([$this->pins[0], $rollPins]);
+        } elseif (!is_null($this->previousRollNotFramedValue)) {
+            $this->createFrame([$this->previousRollNotFramedValue, $rollPins]);
         } else {
-            $this->pins[] = $rollPins;
+            $this->previousRollNotFramedValue = $rollPins;
         }
     }
 
@@ -143,9 +144,9 @@ class BowlingGame
     }
 
     /**
-     * Score bouns pins from strike and spare.
+     * Score bonus pins from strike and spare.
      */
-    private function scoreBonusPins()
+    private function scoreBonusPins(): void
     {
         $this->scoreSpare();
         $this->scoreStrike();
@@ -163,7 +164,7 @@ class BowlingGame
     {
         $this->currentFrame = $frame;
         $this->frames[] = $this->currentFrame;
-        $this->pins = [];
+        $this->previousRollNotFramedValue = null;
     }
 
     /**
@@ -183,11 +184,11 @@ class BowlingGame
      *
      * @return bool True if spare in previous frame.
      */
-    private function spareCondition()
+    private function spareCondition(): bool
     {
         return count($this->frames[$this->currentFrameIndex-1]) === self::FRAME_ROLLS
             && array_sum($this->frames[$this->currentFrameIndex-1]) === self::SPARE_SUM
-            && count($this->pins) === 0;
+            && is_null($this->previousRollNotFramedValue);
     }
 
     /**
@@ -213,7 +214,7 @@ class BowlingGame
      *
      * @return bool True if previous frame by index exists.
      */
-    private function whetherPreviousFrameByIndexExists(int $frameIndex)
+    private function whetherPreviousFrameByIndexExists(int $frameIndex): bool
     {
         return isset($this->frames[$this->currentFrameIndex-$frameIndex]);
     }
@@ -226,10 +227,10 @@ class BowlingGame
      *
      * @return bool True if strike occurs in previous frame by index.
      */
-    private function previousStrikeCondition(int $strikeIndex)
+    private function previousStrikeCondition(int $strikeIndex): bool
     {
         return $this->frames[$this->currentFrameIndex-$strikeIndex][0] === self::STRIKE_SUM
-            && count($this->pins) === 0;
+            && is_null($this->previousRollNotFramedValue);
     }
 
     /**
@@ -243,7 +244,7 @@ class BowlingGame
     /**
      * @return bool True if it's 11 or 12 roll.
      */
-    private function whetherExtraRoll()
+    private function whetherExtraRoll(): bool
     {
         return in_array(count($this->frames), [self::ONE_BEFORE_LAST_FRAME_STRIKE, self::LAST_FRAME_STRIKE]);
     }
