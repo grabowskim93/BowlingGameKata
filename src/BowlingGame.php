@@ -22,17 +22,7 @@ class BowlingGame
      * @var int STRIKE_SUM Amount of pins required for strike.
      */
     const STRIKE_SUM = 10;
-
-    /**
-     * @vat int ONE_BEFORE_LAST_FRAME_STRIKE One before last frame - strike case.
-     */
-    const ONE_BEFORE_LAST_FRAME_STRIKE = 11;
-
-    /**
-     * @var int LAST_FRAME_STRIKE Last frame - strike case.
-     */
-    const LAST_FRAME_STRIKE = 12;
-
+    
     /**
      * @var  int FRAMES_AMOUNT Amount of allowed frames.
      */
@@ -246,6 +236,6 @@ class BowlingGame
      */
     private function whetherExtraRoll(): bool
     {
-        return in_array(count($this->frames), [self::ONE_BEFORE_LAST_FRAME_STRIKE, self::LAST_FRAME_STRIKE]);
+        return count($this->frames) > self::FRAMES_AMOUNT;
     }
 }
