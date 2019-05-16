@@ -104,21 +104,22 @@ class BowlingGame
      */
     public function score(): int
     {
-        foreach ($this->rolls as $roll) {
+        foreach ($this->rolls as $rollPins) {
             $this->currentFrameIndex = count($this->frames);
 
-            if (count($this->frames) <= self::FRAMES_AMOUNT) {
-                $this->score += $roll;
-            }
+            $this->scoreRoll($rollPins);
 
             if (count($this->frames) >= self::FRAMES_AMOUNT) {
-                $this->createFrameAndScoreExtraPins([$roll]);
-            } elseif ($roll === self::STRIKE_SUM && count($this->pins) === 0) {
-                $this->createFrameAndScoreExtraPins([$roll]);
+                $this->createFrame([$rollPins]);
+                $this->scoreBonusPins();
+            } elseif ($rollPins === self::STRIKE_SUM && count($this->pins) === 0) {
+                $this->createFrame([$rollPins]);
+                $this->scoreBonusPins();
             } elseif ((count($this->pins) === 1)) {
-                $this->createFrameAndScoreExtraPins([$this->pins[0], $roll]);
+                $this->createFrame([$this->pins[0], $rollPins]);
+                $this->scoreBonusPins();
             } else {
-                $this->pins[] = $roll;
+                $this->pins[] = $rollPins;
             }
         }
 
@@ -126,17 +127,39 @@ class BowlingGame
     }
 
     /**
+     * Add pins to overall score.
+     *
+     * @param int $pins Number of pins in roll.
+     */
+    private function scoreRoll(int $pins): void
+    {
+        if (count($this->frames) <= self::FRAMES_AMOUNT) {
+            $this->score += $pins;
+        }
+    }
+
+    /**
+     * Score bouns pins from strike and spare.
+     */
+    private function scoreBonusPins()
+    {
+        $this->scoreSpare();
+        $this->scoreStrike();
+        if ($this->whetherExtraRoll()) {
+            $this->scoreLastFrameStrike();
+        }
+    }
+
+    /**
      * Create new frame, add to all frames array, score spare and strike.
      *
      * @param array $frame Frame containing rolls.
      */
-    private function createFrameAndScoreExtraPins(array $frame): void
+    private function createFrame(array $frame): void
     {
         $this->currentFrame = $frame;
         $this->frames[] = $this->currentFrame;
         $this->pins = [];
-        $this->scoreSpare();
-        $this->scoreStrike();
     }
 
     /**
@@ -178,10 +201,7 @@ class BowlingGame
                 $this->score += $this->currentFrame[0];
             }
         }
-
-        $this->scoreLastFrameStrike();
     }
-
 
     /**
      * @param int $frameIndex Check if previous frame by index exists.
@@ -199,7 +219,7 @@ class BowlingGame
      *
      * @param int $strikeIndex Previous strike index.
      *
-     * @return bool True if strike occures in previous frame by index.
+     * @return bool True if strike occurs in previous frame by index.
      */
     private function previousStrikeCondition(int $strikeIndex)
     {
@@ -211,8 +231,14 @@ class BowlingGame
      */
     private function scoreLastFrameStrike(): void
     {
-        if (in_array(count($this->frames), [self::ONE_BEFORE_LAST_FRAME_STRIKE, self::LAST_FRAME_STRIKE])) {
-            $this->score += $this->currentFrame[0];
-        }
+        $this->score += $this->currentFrame[0];
+    }
+
+    /**
+     * @return bool True if it's 11 or 12 roll.
+     */
+    private function whetherExtraRoll()
+    {
+        return in_array(count($this->frames), [self::ONE_BEFORE_LAST_FRAME_STRIKE, self::LAST_FRAME_STRIKE]);
     }
 }
