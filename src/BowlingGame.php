@@ -105,25 +105,29 @@ class BowlingGame
     public function score(): int
     {
         foreach ($this->rolls as $rollPins) {
-            $this->currentFrameIndex = count($this->frames);
-
             $this->scoreRoll($rollPins);
-
-            if (count($this->frames) >= self::FRAMES_AMOUNT) {
-                $this->createFrame([$rollPins]);
-                $this->scoreBonusPins();
-            } elseif ($rollPins === self::STRIKE_SUM && count($this->pins) === 0) {
-                $this->createFrame([$rollPins]);
-                $this->scoreBonusPins();
-            } elseif ((count($this->pins) === 1)) {
-                $this->createFrame([$this->pins[0], $rollPins]);
-                $this->scoreBonusPins();
-            } else {
-                $this->pins[] = $rollPins;
-            }
+            $this->splitIntoFrames($rollPins);
+            $this->scoreBonusPins();
+            $this->currentFrameIndex = count($this->frames);
         }
 
         return $this->score;
+    }
+
+    /**
+     * @param int $rollPins Pins in single roll.
+     */
+    private function splitIntoFrames(int $rollPins)
+    {
+        if (count($this->frames) >= self::FRAMES_AMOUNT) {
+            $this->createFrame([$rollPins]);
+        } elseif ($rollPins === self::STRIKE_SUM && count($this->pins) === 0) {
+            $this->createFrame([$rollPins]);
+        } elseif ((count($this->pins) === 1)) {
+            $this->createFrame([$this->pins[0], $rollPins]);
+        } else {
+            $this->pins[] = $rollPins;
+        }
     }
 
     /**
@@ -177,12 +181,13 @@ class BowlingGame
     /**
      * Check if spare in previous frame.
      *
-     * @return bool
+     * @return bool True if spare in previous frame.
      */
     private function spareCondition()
     {
         return count($this->frames[$this->currentFrameIndex-1]) === self::FRAME_ROLLS
-            && array_sum($this->frames[$this->currentFrameIndex-1]) === self::SPARE_SUM;
+            && array_sum($this->frames[$this->currentFrameIndex-1]) === self::SPARE_SUM
+            && count($this->pins) === 0;
     }
 
     /**
@@ -223,7 +228,8 @@ class BowlingGame
      */
     private function previousStrikeCondition(int $strikeIndex)
     {
-        return $this->frames[$this->currentFrameIndex-$strikeIndex][0] === self::STRIKE_SUM;
+        return $this->frames[$this->currentFrameIndex-$strikeIndex][0] === self::STRIKE_SUM
+            && count($this->pins) === 0;
     }
 
     /**
