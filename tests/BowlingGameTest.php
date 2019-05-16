@@ -70,5 +70,13 @@ class BowlingGameTest extends TestCase
             'input' => [0, 10, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             'output' => 23, 'expectError' => false
         ];
+        yield 'Game#7 - 10 strikes followed by spare'  => [
+            'input' => [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 1],
+            'output' => 289, 'expectError' => false
+        ];
+        yield 'Game#7 - 11 strikes'  => [
+            'input' => [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 3],
+            'output' => 293, 'expectError' => false
+        ];
     }
 }
