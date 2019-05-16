@@ -14,72 +14,59 @@ namespace App;
 class BowlingGame
 {
     /**
-     * Amount of pins required for spare.
-     *
-     * @var int
+     * @var int SPARE_SUM Amount of pins required for spare.
      */
     const SPARE_SUM = 10;
 
     /**
-     * Amount of pins required for strike.
-     *
-     * @var int
+     * @var int STRIKE_SUM Amount of pins required for strike.
      */
     const STRIKE_SUM = 10;
 
     /**
-     * One before last frame - strike case.
-     *
-     * @const int
+     * @vat int ONE_BEFORE_LAST_FRAME_STRIKE One before last frame - strike case.
      */
     const ONE_BEFORE_LAST_FRAME_STRIKE = 11;
 
     /**
-     * Last frame - strike case.
-     *
-     * @const int
+     * @var int LAST_FRAME_STRIKE Last frame - strike case.
      */
     const LAST_FRAME_STRIKE = 12;
 
     /**
-     * Amount of allowed frames.
-     *
-     * @var int
+     * @var  int FRAMES_AMOUNT Amount of allowed frames.
      */
     const FRAMES_AMOUNT = 10;
 
 
     /**
-     * Amount of rolls in spare or normal frame.
-     *
-     * @var int
+     * @var int FRAME_ROLLS Amount of rolls in spare or normal frame.
      */
     const FRAME_ROLLS = 2;
 
     /**
-     * Array with all rolls pins.
-     *
-     * @var array
+     * @var array $pins Array with all rolls pins.
      */
     private $pins;
 
     /**
-     * Total score of game.
-     *
-     * @var int
+     * @var int $score Total score of game.
      */
     private $score;
 
     /**
-     * @var array
+     * @var array $currentFrame Current frame with rolls.
      */
     private $currentFrame;
 
     /**
-     * @var array
+     * @var array $frames Array of all game frames.
      */
     private $frames;
 
+    /**
+     * BowlingGame constructor.
+     */
     public function __construct()
     {
         $this->score = 0;
@@ -159,26 +146,21 @@ class BowlingGame
             && $this->frames[$currentFrame-1][0] === self::STRIKE_SUM
         ) {
             $this->score += array_sum($this->currentFrame);
+
+            if (isset($this->frames[$currentFrame-2]) && $this->frames[$currentFrame-2][0] === self::STRIKE_SUM) {
+                $this->score += $this->currentFrame[0];
+            }
         }
 
-        if (isset($this->frames[$currentFrame-2])
-            && count($this->frames) <= self::FRAMES_AMOUNT
-            && $this->frames[$currentFrame-2][0] === self::STRIKE_SUM
-            && $this->frames[$currentFrame-1][0] === self::STRIKE_SUM
-        ) {
-            $this->score += $this->currentFrame[0];
-        }
+        $this->scoreLastFrameStrike();
+    }
 
-        if (isset($this->frames[$currentFrame-2])
-            && count($this->frames) == self::LAST_FRAME_STRIKE
-            && $this->frames[$currentFrame-2][0] === self::STRIKE_SUM
-        ) {
-            $this->score += $this->currentFrame[0];
-        }
-
-        if (isset($this->frames[$currentFrame-2])
-            && count($this->frames) == self::ONE_BEFORE_LAST_FRAME_STRIKE
-        ) {
+    /**
+     * Score strike in last frame.
+     */
+    private function scoreLastFrameStrike(): void
+    {
+        if (in_array(count($this->frames), [self::ONE_BEFORE_LAST_FRAME_STRIKE, self::LAST_FRAME_STRIKE])) {
             $this->score += $this->currentFrame[0];
         }
     }
