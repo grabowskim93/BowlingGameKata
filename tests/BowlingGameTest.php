@@ -26,7 +26,7 @@ class BowlingGameTest extends TestCase
      * @param $output
      * @param $expectException
      */
-    public function testRoll($input, $output, $expectException)
+    public function testGame($input, $output, $expectException)
     {
         $bowlingGame = new BowlingGame();
 
