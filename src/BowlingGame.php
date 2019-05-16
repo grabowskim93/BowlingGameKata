@@ -28,11 +28,18 @@ class BowlingGame
     const STRIKE_SUM = 10;
 
     /**
-     * Frames limit when strike or spare is thrown in last round.
+     * One before last frame - strike case.
      *
-     * @var int
+     * @const int
      */
-    const SPARE_STRIKE_FRAMES_LIMIT = 11;
+    const ONE_BEFORE_LAST_FRAME_STRIKE = 11;
+
+    /**
+     * Last frame - strike case.
+     *
+     * @const int
+     */
+    const LAST_FRAME_STRIKE = 12;
 
     /**
      * Amount of allowed frames.
@@ -92,7 +99,9 @@ class BowlingGame
             $this->score += $pins;
         }
 
-        if ($pins === self::STRIKE_SUM && count($this->pins) === 0) {
+        if (count($this->frames) >= self::FRAMES_AMOUNT) {
+            $this->createFrameAndScoreExtraPins([$pins]);
+        } elseif ($pins === self::STRIKE_SUM && count($this->pins) === 0) {
             $this->createFrameAndScoreExtraPins([$pins]);
         } elseif ((count($this->pins) === 1)) {
             $this->createFrameAndScoreExtraPins([$this->pins[0], $pins]);
@@ -146,16 +155,29 @@ class BowlingGame
     {
         $currentFrame = count($this->frames) - 1; //because increments from 0.
         if (isset($this->frames[$currentFrame-1])
-            && count($this->frames) <= self::SPARE_STRIKE_FRAMES_LIMIT
+            && count($this->frames) <= self::FRAMES_AMOUNT
             && $this->frames[$currentFrame-1][0] === self::STRIKE_SUM
         ) {
             $this->score += array_sum($this->currentFrame);
         }
 
         if (isset($this->frames[$currentFrame-2])
-            && count($this->frames) <= self::SPARE_STRIKE_FRAMES_LIMIT
+            && count($this->frames) <= self::FRAMES_AMOUNT
             && $this->frames[$currentFrame-2][0] === self::STRIKE_SUM
             && $this->frames[$currentFrame-1][0] === self::STRIKE_SUM
+        ) {
+            $this->score += $this->currentFrame[0];
+        }
+
+        if (isset($this->frames[$currentFrame-2])
+            && count($this->frames) == self::LAST_FRAME_STRIKE
+            && $this->frames[$currentFrame-2][0] === self::STRIKE_SUM
+        ) {
+            $this->score += $this->currentFrame[0];
+        }
+
+        if (isset($this->frames[$currentFrame-2])
+            && count($this->frames) == self::ONE_BEFORE_LAST_FRAME_STRIKE
         ) {
             $this->score += $this->currentFrame[0];
         }
