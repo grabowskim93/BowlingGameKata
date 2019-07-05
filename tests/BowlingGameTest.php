@@ -22,61 +22,57 @@ class BowlingGameTest extends TestCase
      *
      * @dataProvider rollsProvider
      *
-     * @param $input
-     * @param $output
-     * @param $expectException
+     * @param $pins
+     * @param $score
      */
-    public function testGame($input, $output, $expectException)
+    public function testGame($pins, $score)
     {
         $bowlingGame = new BowlingGame();
 
-        foreach ($input as $roll) {
-            $bowlingGame->roll($roll);
+        foreach ($pins as $pin) {
+            $bowlingGame->roll($pin);
         }
-
-        $this->assertEquals($output, $bowlingGame->score());
+        $this->assertEquals($score, $bowlingGame->score());
     }
 
     /**
-     * Input - rolls in bowling game.
-     * Output - score after game.
-     * ExpectedError - determines if non valid game.
-     *
-     * @return Generator
+     * @return \Generator
      */
     public function rollsProvider()
     {
-        yield 'Game#1 - all ones'   => [
+        yield 'all ones'  => [
             'input' => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            'output' => 20, 'expectError' => false
+            'output' => 20
         ];
-        yield 'Game#2 - spare in first frame'  => [
-            'input' => [6, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            'output' => 16, 'expectError' => false
+
+        yield 'one and two'  => [
+            'input' => [2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2],
+            'output' => 24
         ];
-        yield 'Game#3 - strike in first frame, followed by 3 and 4 pins, followed by all misses'  => [
-            'input' => [10, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            'output' => 24, 'expectError' => false
+
+        yield 'first spare'  => [
+            'input' => [6, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            'output' => 20
         ];
-        yield 'Game#4 - perfect game - 12 strikes'  => [
+
+        yield 'first strike'  => [
+            'input' => [10, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            'output' => 28
+        ];
+
+        yield 'perfect game'  => [
             'input' => [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
-            'output' => 300, 'expectError' => false
+            'output' => 300
         ];
-        yield 'Game#5 - 2 strikes followed by spare'  => [
-            'input' => [10, 10, 7, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            'output' => 57, 'expectError' => false
+
+        yield 'first spare rest strikes'  => [
+            'input' => [0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+            'output' => 290
         ];
-        yield 'Game#6 - spares in second roll'  => [
-            'input' => [0, 10, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            'output' => 23, 'expectError' => false
-        ];
-        yield 'Game#7 - 10 strikes followed by spare'  => [
-            'input' => [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 1],
-            'output' => 289, 'expectError' => false
-        ];
-        yield 'Game#8 - 11 strikes'  => [
-            'input' => [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 3],
-            'output' => 293, 'expectError' => false
+
+        yield 'last spare '  => [
+            'input' => [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1],
+            'output' => 291
         ];
     }
 }
